@@ -42,12 +42,12 @@ with col2:
 if st.button("Deteksi Potensi Dropout", use_container_width=True):
     # Menyusun data HANYA dengan 6 fitur, persis sesuai urutan training
     data = {
-        'Tuition fees up to date': tuition_val,
-        'Scholarship holder': scholarship_val,
-        'Age at enrollment': age,
-        'Admission grade': admission_grade,
-        'Curricular units 1st sem (grade)': sem1_grade,
-        'Curricular units 2nd sem (grade)': sem2_grade
+        'Tuition_fees_up_to_date': tuition_val,
+        'Scholarship_holder': scholarship_val,
+        'Age_at_enrollment': age,
+        'Admission_grade': admission_grade,
+        'Curricular_units_1st_sem_grade': sem1_grade,
+        'Curricular_units_2nd_sem_grade': sem2_grade
     }
     
     # Konversi ke DataFrame
