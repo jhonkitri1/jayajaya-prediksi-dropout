@@ -5,17 +5,17 @@ import joblib
 # Konfigurasi Halaman
 st.set_page_config(page_title="Jaya Jaya Institut - Prediksi Dropout", page_icon="🎓", layout="centered")
 
-# Memuat Model Machine Learning
+# Memuat Model Machine Learning yang BARU (Hanya 6 Fitur)
 @st.cache_resource
 def load_model():
-    return joblib.load('model/rf_model.joblib')
+    return joblib.load('model/rf_model_new.joblib')
 
 model = load_model()
 
 # Header Aplikasi
 st.title("🎓 Sistem Deteksi Dini Dropout")
 st.subheader("Jaya Jaya Institut")
-st.write("Aplikasi ini menggunakan Machine Learning untuk memprediksi probabilitas mahasiswa putus studi (dropout) berdasarkan profil akademik dan finansial mereka.")
+st.write("Aplikasi ini memprediksi probabilitas mahasiswa putus studi (dropout) berdasarkan 6 fitur utama yang terbukti paling berpengaruh dari hasil analisis data.")
 
 st.markdown("---")
 
@@ -40,23 +40,14 @@ with col2:
 
 # Tombol Prediksi
 if st.button("Deteksi Potensi Dropout", use_container_width=True):
-    # Membuat dictionary dengan default value untuk semua 36 fitur (menggunakan nilai rata-rata/median dataset)
-    # Ini agar model tidak error karena kekurangan kolom
+    # Menyusun data HANYA dengan 6 fitur, persis sesuai urutan training
     data = {
-        'Marital_status': 1, 'Application_mode': 1, 'Application_order': 1, 'Course': 1, 
-        'Daytime_evening_attendance': 1, 'Previous_qualification': 1, 'Previous_qualification_grade': 130.0, 
-        'Nacionality': 1, 'Mothers_qualification': 1, 'Fathers_qualification': 1, 
-        'Mothers_occupation': 1, 'Fathers_occupation': 1, 'Admission_grade': admission_grade, 
-        'Displaced': 1, 'Educational_special_needs': 0, 'Debtor': 0, 
-        'Tuition_fees_up_to_date': tuition_val, 'Gender': 0, 'Scholarship_holder': scholarship_val, 
-        'Age_at_enrollment': age, 'International': 0, 'Curricular_units_1st_sem_credited': 0, 
-        'Curricular_units_1st_sem_enrolled': 6, 'Curricular_units_1st_sem_evaluations': 6, 
-        'Curricular_units_1st_sem_approved': 5, 'Curricular_units_1st_sem_grade': sem1_grade, 
-        'Curricular_units_1st_sem_without_evaluations': 0, 'Curricular_units_2nd_sem_credited': 0, 
-        'Curricular_units_2nd_sem_enrolled': 6, 'Curricular_units_2nd_sem_evaluations': 6, 
-        'Curricular_units_2nd_sem_approved': 5, 'Curricular_units_2nd_sem_grade': sem2_grade, 
-        'Curricular_units_2nd_sem_without_evaluations': 0, 'Unemployment_rate': 10.0, 
-        'Inflation_rate': 1.0, 'GDP': 1.0
+        'Tuition_fees_up_to_date': tuition_val,
+        'Scholarship_holder': scholarship_val,
+        'Age_at_enrollment': age,
+        'Admission_grade': admission_grade,
+        'Curricular_units_1st_sem_grade': sem1_grade,
+        'Curricular_units_2nd_sem_grade': sem2_grade
     }
     
     # Konversi ke DataFrame
@@ -69,6 +60,6 @@ if st.button("Deteksi Potensi Dropout", use_container_width=True):
     st.header("Hasil Analisis:")
     
     if prediction[0] == 1:
-        st.error("Peringatan Tinggi: Mahasiswa ini berisiko besar untuk DROPOUT. Segera jadwalkan sesi bimbingan akademik dan finansial.")
+        st.error("**Peringatan Tinggi:** Mahasiswa ini berisiko besar untuk DROPOUT. Segera jadwalkan sesi bimbingan akademik dan finansial.")
     else:
-        st.success("Aman: Mahasiswa ini diprediksi akan LULUS (Graduate). Terus pertahankan performanya.")
+        st.success("**Aman:** Mahasiswa ini diprediksi akan LULUS (Graduate). Terus pertahankan performanya.")
